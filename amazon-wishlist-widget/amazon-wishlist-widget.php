@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: Amazon Wishlist Widget
-Plugin URI: http://nearly.jp/
+Plugin URI: https://github.com/yakiniku48/WordPress-Amazon-Wishlist-Widget
 Description: Just an Amazon Wishlist Widget.
 Author: Hideyuki Motoo
-Author URI: http://nearly.jp/
+Author URI: http://motoo.net/
 Version: 0.1
 */
 
