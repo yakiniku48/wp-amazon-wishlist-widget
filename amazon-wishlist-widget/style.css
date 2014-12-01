@@ -1,0 +1,47 @@
+.widget_amazon_wishlist_widget li {
+	border-top: 1px solid rgba(255, 255, 255, 0.2);
+	overflow: hidden;
+	padding: 8px 0 9px;
+}
+
+.widget_amazon_wishlist_widget li:first-child {
+	border-top: 0;
+}
+
+.widget_amazon_wishlist_widget .post-date {
+	display: block;
+}
+
+.content-sidebar .widget_amazon_wishlist_widget li {
+	border-color: rgba(0, 0, 0, 0.1);
+}
+
+.widget_amazon_wishlist_widget li img {
+	float: left;
+	margin-right: 5px;
+}
+.widget_amazon_wishlist_widget li dl {
+	margin-bottom: 0;
+}
+.widget_amazon_wishlist_widget li dt {
+	padding: 0 0 5px;
+}
+.widget_amazon_wishlist_widget li dd {
+	margin-bottom: 0;
+}
+.widget_amazon_wishlist_widget li dd span.amazon-price {
+	color: rgb(144, 0, 0);
+}
+
+@media screen and (min-width: 1008px) {
+	
+	.footer-sidebar .widget_amazon_wishlist_widget li:first-child,
+	.primary-sidebar .widget_amazon_wishlist_widget li:first-child {
+		padding-top: 0;
+	}
+
+	.footer-sidebar .widget_amazon_wishlist_widget li:last-child,
+	.primary-sidebar .widget_amazon_wishlist_widget li:last-child {
+		padding-bottom: 0;
+	}
+}
