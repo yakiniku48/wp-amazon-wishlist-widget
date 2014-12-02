@@ -28,21 +28,33 @@ class WP_AW_Widget extends WP_Widget {
 		$multipage_count = 10;
 		$wishlist = array();
 		
+		$title = apply_filters( 'widget_body', $instance['title'] );
 		$tracking_id = apply_filters( 'widget_body', $instance['tracking'] );
 		$wishlist_id = apply_filters( 'widget_body', $instance['wishlist'] );
 		$locale = apply_filters( 'widget_body', $instance['locale'] );
 		
-		do {
-			$json = $this->get_wishlist( $wishlist_id, $locale, $multipage_start, $multipage_count );
-			if (empty($json->results)) break;
-			$wishlist = array_merge( $wishlist, $json->results );
-			$multipage_start += $multipage_count;
-		} while ( $json->NumRecords > count($wishlist) );
+		$last_modified = (int) get_option( '_plugin_amazon_wishlist_widget_time' );
+		if (time() - $last_modified > 60 * 5) {	//every 5min
+			do {
+				$json = $this->get_wishlist( $wishlist_id, $locale, $multipage_start, $multipage_count );
+				if (empty($json->results)) break;
+				$wishlist = array_merge( $wishlist, $json->results );
+				$multipage_start += $multipage_count;
+			} while ( $json->NumRecords > count($wishlist) );
+			update_option( '_plugin_amazon_wishlist_widget_data', $wishlist );
+			update_option( '_plugin_amazon_wishlist_widget_time', time() );
+		} else {
+			$wishlist = get_option( '_plugin_amazon_wishlist_widget_data' );
+		}
 
 		echo $args['before_widget'];
 		
+		if ($title) {
 		?>
-		<h1 class="widget-title"><?php echo _e('Author&apos;s Amazon Wishlist:'); ?></h1>
+		<h1 class="widget-title"><?php echo _e($title.':'); ?></h1>
+		<?php
+		}
+		?>
 		<ul>
 		<?php
 		foreach ( $wishlist as $item)
@@ -62,17 +74,23 @@ class WP_AW_Widget extends WP_Widget {
 		}
 		?>
 		</ul>
-<!--
-		<?php
-		print_r($wishlist);
-		?>
--->
 		<?php
 		echo $args['after_widget'];
 	}
 
 	//Admin panel
 	public function form( $instance ) {
+		
+		$title = esc_attr($instance['title']);
+		?>
+		<p>
+			<label for="<?php echo $this->get_field_id('title'); ?>">
+			<?php echo _e('Title:'); ?>
+			</label>
+			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>">
+		</p>
+		
+		<?php
 		$wishlist = esc_attr($instance['wishlist']);
 		?>
 		<p>
