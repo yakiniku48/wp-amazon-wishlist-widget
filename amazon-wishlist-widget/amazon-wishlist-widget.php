@@ -34,6 +34,7 @@ class WP_AW_Widget extends WP_Widget {
 		
 		do {
 			$json = $this->get_wishlist( $wishlist_id, $locale, $multipage_start, $multipage_count );
+			if (empty($json->results)) break;
 			$wishlist = array_merge( $wishlist, $json->results );
 			$multipage_start += $multipage_count;
 		} while ( $json->NumRecords > count($wishlist) );
