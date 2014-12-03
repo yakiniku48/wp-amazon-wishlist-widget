@@ -5,12 +5,23 @@ Plugin URI: https://github.com/yakiniku48/WordPress-Amazon-Wishlist-Widget
 Description: Just an Amazon Wishlist Widget.
 Author: Hideyuki Motoo
 Author URI: http://motoo.net/
-Version: 0.2
+Version: 0.2.1
 */
 
 class WP_AW_Widget extends WP_Widget {
 	
-	protected $locale = array( 'CA', 'CN', 'DE', 'ES', 'FR', 'IN', 'IT', 'JP', 'UK', 'US' );
+	protected $locale = array(
+		'CA' => 'amazon.ca',
+		'CN' => 'amazon.cn',
+		'DE' => 'amazon.de',
+		'ES' => 'amazon.es',
+		'FR' => 'amazon.fr',
+		//'IN' => '',
+		'IT' => 'amazon.it',
+		'JP' => 'amazon.co.jp',
+		'UK' => 'amazon.co.uk',
+		'US' => 'amazon.com'
+	);
 	
 	public function __construct() {
 		parent::__construct(
@@ -119,7 +130,7 @@ class WP_AW_Widget extends WP_Widget {
 			</label>
 			<select class="widefat" id="<?php echo $this->get_field_id('locale'); ?>" name="<?php echo $this->get_field_name('locale'); ?>">
 		<?php
-		foreach ($this->locale as $slate) {
+		foreach (array_keys($this->locale) as $slate) {
 			$selected = ($locale == $slate) ? 'selected="selected"' : '';
 			?>
 			<option value="<?php echo $slate; ?>" <?php echo $selected; ?>><?php echo $slate; ?></option>
@@ -137,7 +148,7 @@ class WP_AW_Widget extends WP_Widget {
 
 	protected function get_wishlist( $list_id, $locale, $multipage_start, $multipage_count ) {
 		
-		$query .= 'http://ws-fe.amazon-adsystem.com/widgets/q';
+		$query .= 'http://ws.'.$this->locale[$locale].'/widgets/q';
 		$query .= '?Operation=GetResults';
 		$query .= '&ListId='.$list_id;
 		$query .= '&multipageStart='.$multipage_start;
